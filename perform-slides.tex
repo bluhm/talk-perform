@@ -16,6 +16,7 @@
 %\usepackage[nomixage,puffy]{genuaslides}
 \usetheme{Frankfurt}
 \usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
 \usepackage{graphicx}
 
 \author{Alexander Bluhm}
@@ -146,7 +147,35 @@ Numbers for
 
 \section{Regress All}
 \begin{frame}{Regress All}
-\includegraphics[width=\textwidth]{images/screenshot_regress_all.png}
+    \includegraphics[width=\textwidth,trim=0 4cm 0 0,clip]
+	{images/screenshot_regress_all.png}
+\end{frame}
+
+\section{Regress All with Links}
+\begin{frame}{Regress All with Links}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+	{\includegraphics[width=10cm,trim=0 7cm 37cm 0,clip]
+	{images/screenshot_regress_all.png}};
+    \path (-1.3,-.7) node (n1) [red] {run history};
+    \path (1.2,-1.1) node (e1) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n1) -- (e1);
+    \path (-1.5,-2.1) node (n2) [red] {cvs web};
+    \path (.5,-2.35) node (e2) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n2) -- (e2);
+    \path (-1.5,-3.5) node (n3) [red,align=center] {colored\\status};
+    \path (3,-3.8) node (e3) [ellipse,minimum width=2cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n3) -- (e3);
+    \path (-1.5,-5.3) node (n4) [red] {test output};
+    \path (3.2,-4.8) node (e4) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n4) -- (e4);
+    \path (6.5,0) node (n5) [red,align=center] {setup logs\\obj download};
+    \path (4.2,-1.45) node (e5) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n5) -- (e5);
+    \path (9,0) node (n6) [red,align=center] {tested\\version};
+    \path (6.5,-1.7) node (e6) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n6) -- (e6);
+\end{tikzpicture}
 \end{frame}
 
 \section{Hardware Perform}
