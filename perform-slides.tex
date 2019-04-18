@@ -263,7 +263,7 @@ Numbers for
     \path ( 6,-2) node [draw,circle,align=center,minimum width=2.5cm]
 	(kernel) {compile\\kernel};
     \path ( 9,-2) node [draw,circle,align=center,minimum width=2.5cm]
-	(test) {run\\test};
+	(test) {run\\tests};
     \path ( 6, 2) node [draw,circle,align=center,minimum width=2.5cm]
 	(step) {advance\\by step};
     \path (11, 1) node [draw,circle,align=center,minimum width=2.5cm]
@@ -272,7 +272,8 @@ Numbers for
     \draw [->] (checkout) -- (kernel);
     \draw [->] (kernel) -- (test);
     \draw [->] (test) -- (result);
-    \draw [->] (test) -- (step) -- (checkout);
+    \draw [->] (test) -- (step);
+    \draw [->] (step) -- (checkout);
 \end{tikzpicture}
 \end{frame}
 
@@ -280,6 +281,49 @@ Numbers for
 \begin{frame}{Weekly from 6.2 to 6.3}
     \includegraphics[width=\textwidth,trim=0 3.6cm 0 0,clip]
 	{images/2019-02-04T15:10:35Z-tcp.png}
+\end{frame}
+
+\subsection{Build Quirks}
+\begin{frame}{Build Quirks}
+\begin{tikzpicture}
+    \path ( 3,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(checkout) {checkout\\at date};
+    \path ( 6,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(kernel) {compile\\kernel};
+    \path ( 9,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(test) {run\\tests};
+    \path ( 9, 2) node [draw,circle,align=center,minimum width=2.5cm]
+	(step) {advance\\by step};
+    \path ( 6, 2) node [draw,circle,align=center,minimum width=2.5cm]
+	(userland) {checkout\\userland};
+    \path ( 3, 2) node [draw,circle,align=center,minimum width=2.5cm]
+	(toolchain) {build\\toolchain};
+    \draw [->] (release) -- (checkout);
+    \draw [->] (checkout) -- (kernel);
+    \draw [->] (kernel) -- (test);
+    \draw [->] (test) -- (result);
+    \draw [->] (test) -- (step);
+    \draw [->] (step) -- (checkout);
+    \draw [->] (step) -- (userland);
+    \draw [->] (userland) -- (toolchain);
+    \draw [->] (toolchain) -- (checkout);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{Quirks from 6.2 to 6.3}
+\begin{frame}{Quirks from 6.2 to 6.3}
+\begin{tabular}{cl}
+    A & OpenBSD/amd64 6.2 release\\
+    B & fix cvs vendor branch checkout\\
+    C & clang update LLVM to 5.0.0\\
+    D & pfctl pf packet rate matching\\
+    E & move kernel source file dwiic.c\\
+    F & pfctl pf divert type\\
+    G & sysctl struct vfsconf\\
+    H & clang update LLVM to 5.0.1\\
+    I & pfctl pf syncookies\\
+    J & OpenBSD/amd64 6.3 release\\
+\end{tabular}
 \end{frame}
 
 \subsection{Performance Hardware Future}
