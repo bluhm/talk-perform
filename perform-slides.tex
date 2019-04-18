@@ -124,7 +124,7 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\section{Unsuitable}
+\subsection{Unsuitable}
 \begin{frame}{Unsuitable}
 \begin{itemize}
     \item too many requirements
@@ -133,7 +133,7 @@ Numbers for
 \end{itemize}
 \end{frame}
 
-\section{Existing Regress Tests}
+\subsection{Existing Regress Tests}
 \begin{frame}{Existing Regress Tests}
 \begin{itemize}
     \item daily test runs
@@ -145,13 +145,13 @@ Numbers for
 \end{itemize}
 \end{frame}
 
-\section{Regress All}
+\subsection{Regress All}
 \begin{frame}{Regress All}
     \includegraphics[width=\textwidth,trim=0 4cm 0 0,clip]
 	{images/screenshot_regress_all.png}
 \end{frame}
 
-\section{Regress All with Links}
+\subsection{Regress All with Links}
 \begin{frame}{Regress All with Links}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
@@ -178,7 +178,7 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\section{Regress i386}
+\subsection{Regress i386}
 \begin{frame}{Regress i386}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
@@ -191,7 +191,36 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\section{Hardware Perform}
+\subsection{Hardware Regress}
+\begin{frame}{Hardware Regess}
+\begin{tikzpicture}
+    \path ( -2,   3) node (web) {web};
+    \path ( -2, 1.5) node [draw] (master) {master};
+    \path (  0,   0) node [draw] (local) {local};
+    \path (  3,   0) node [draw,dashed] (remote) {remote};
+    \path (  6,   0) node [draw,dotted] (router) {router};
+    \path (  9,   0) node [draw,dotted] (server) {server};
+    \path ( -2,-1.5) node [draw] (console) {console};
+    \draw (local) -- (remote);
+    \draw (remote) -- (router);
+    \draw (router) -- (server);
+    \draw [->,red] (master) -- (web) node [midway,left] {publish};
+    \draw [->,red] (master) -- (console) node [midway,left] {control};
+    \draw [->,red] (master) |- (local) node [midway,left] {control};
+    \draw [->,red] (master) -| (local);
+    \draw [->,red] (master) -| (remote) node [midway,above] {configure};
+    \draw [->,red] (master) -| (router);
+    \draw [->,red] (master) -| (server);
+    \draw [->,red] (console) -| (local);
+    \draw [->,red] (console) -| (remote) node [midway,below] {install};
+    \draw [->,red] (console) -| (router);
+    \draw [->,red] (console) -| (server);
+\end{tikzpicture}
+\end{frame}
+
+\section{How does it work?}
+
+\subsection{Hardware Perform}
 \begin{frame}{Hardware Perform}
 \begin{tikzpicture}
     \path ( 0, 0) node [draw] (tw) {Target};
@@ -200,7 +229,7 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\section{Hardware Perform Future}
+\subsection{Hardware Perform Future}
 \begin{frame}{Hardware Perform Future}
 \begin{tikzpicture}
     \path ( 0, 0) node [draw] (tw1) {Target 1};
@@ -214,5 +243,6 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
+\section{What are the findings?}
 
 \end{document}
