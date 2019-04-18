@@ -30,7 +30,7 @@
 \titlepage
 \end{frame}
 
-\begin{frame}{Agenda}
+\begin{frame}{Agenda Perfomance Measurement}
 \setcounter{tocdepth}{1}
 \tableofcontents
 \end{frame}
@@ -46,7 +46,7 @@ Numbers for
     \item Customers
     \item Marketing
     \item Developers
-    \item Whatever
+    \item Hardware
     \item \dots
 \end{itemize}
 \end{frame}
@@ -56,8 +56,8 @@ Numbers for
 \includegraphics[width=\textwidth]{images/gs700r7_obsd_proxy_tcp.png}
 \end{frame}
 
-\subsection{Multi User Hardware}
-\begin{frame}{Multi User Hardware}
+\subsection{Multi User, Multi Purpose Hardware Setup}
+\begin{frame}{Multi User, Multi Purpose Hardware Setup}
 \begin{tikzpicture}
     \path (-5.8, 0) node [draw] (s1) {Source 1};
     \path (-5.8,-1) node [draw] (s2) {Source 2};
@@ -124,8 +124,8 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Unsuitable}
-\begin{frame}{Unsuitable}
+\subsection{Unsuitable HPF}
+\begin{frame}{Unsuitable HPF}
 \begin{itemize}
     \item too many requirements
     \item too much complexity
@@ -133,8 +133,17 @@ Numbers for
 \end{itemize}
 \end{frame}
 
-\subsection{Existing Regress Tests}
-\begin{frame}{Existing Regress Tests}
+\subsection{Performance Hardware Design}
+\begin{frame}{Performance Hardware Design}
+\begin{tikzpicture}
+    \path (  0,   0) node [draw] (local) {Target};
+    \path (  4,   0) node [draw] (remote) {Target};
+    \draw [->] (local) -- (remote) node [midway,above] {10 Gbit};
+\end{tikzpicture}
+\end{frame}
+
+\subsection{Existing Regression Tests}
+\begin{frame}{Existing Regression Tests}
 \begin{itemize}
     \item daily test runs
     \item existing /usr/src/regress
@@ -145,14 +154,14 @@ Numbers for
 \end{itemize}
 \end{frame}
 
-\subsection{Regress All}
-\begin{frame}{Regress All}
+\subsection{All Regression Tests}
+\begin{frame}{All Regression Tests}
     \includegraphics[width=\textwidth,trim=0 4cm 0 0,clip]
 	{images/screenshot_regress_all.png}
 \end{frame}
 
-\subsection{Regress All with Links}
-\begin{frame}{Regress All with Links}
+\subsection{Regression Tests with Links}
+\begin{frame}{Regression Tests with Links}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
 	{\includegraphics[width=10cm,trim=0 7cm 37cm 0,clip]
@@ -178,8 +187,8 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Regress i386}
-\begin{frame}{Regress i386}
+\subsection{Regression History for i386}
+\begin{frame}{Regression History for i386}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
 	{\includegraphics[width=10cm,trim=0 7cm 37cm 0,clip]
@@ -191,8 +200,21 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Hardware Regress}
-\begin{frame}{Hardware Regess}
+\subsection{Regression Test Hardware}
+\begin{frame}{Regression Test Hardware}
+\begin{tikzpicture}
+    \path (  0,   0) node [draw] (local) {local};
+    \path (  3,   0) node [draw,dashed] (remote) {remote};
+    \path (  6,   0) node [draw,dotted] (router) {router};
+    \path (  9,   0) node [draw,dotted] (server) {server};
+    \draw (local) -- (remote);
+    \draw (remote) -- (router);
+    \draw (router) -- (server);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{Regression Master}
+\begin{frame}{Regression Master}
 \begin{tikzpicture}
     \path ( -2,   3) node (web) {web};
     \path ( -2, 1.5) node [draw] (master) {master};
@@ -205,14 +227,14 @@ Numbers for
     \draw (remote) -- (router);
     \draw (router) -- (server);
     \draw [->,red] (master) -- (web) node [midway,left] {publish};
-    \draw [->,red] (master) -- (console) node [midway,left] {control};
-    \draw [->,red] (master) |- (local) node [midway,left] {control};
+    \draw [->,red] (master) -- (console);
+    \draw [->,red] (master) |- (local) node [near start,left] {control};
     \draw [->,red] (master) -| (local);
-    \draw [->,red] (master) -| (remote) node [midway,above] {configure};
+    \draw [->,red] (master) -| (remote) node [near start,above] {configure};
     \draw [->,red] (master) -| (router);
     \draw [->,red] (master) -| (server);
     \draw [->,red] (console) -| (local);
-    \draw [->,red] (console) -| (remote) node [midway,below] {install};
+    \draw [->,red] (console) -| (remote) node [near start,below] {install};
     \draw [->,red] (console) -| (router);
     \draw [->,red] (console) -| (server);
 \end{tikzpicture}
@@ -220,26 +242,75 @@ Numbers for
 
 \section{How does it work?}
 
-\subsection{Hardware Perform}
-\begin{frame}{Hardware Perform}
+\subsection{Performance Goals}
+\begin{frame}{Performance Goals}
+\begin{itemize}
+    \item history
+    \item reproducable
+    \item details available
+    \item drill down
+    \item automatic
+\end{itemize}
+\end{frame}
+
+\subsection{Performance History}
+\begin{frame}{Performance History}
 \begin{tikzpicture}
-    \path ( 0, 0) node [draw] (tw) {Target};
-    \path ( 4, 0) node [draw] (te) {Target};
-    \draw [->] (tw.east) -- (te.west);
+    \path ( 1, 1) node [draw,circle,align=center,minimum width=2.5cm]
+	(release) {install\\release};
+    \path ( 3,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(checkout) {checkout\\at date};
+    \path ( 6,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(kernel) {compile\\kernel};
+    \path ( 9,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(test) {run\\test};
+    \path ( 6, 2) node [draw,circle,align=center,minimum width=2.5cm]
+	(step) {advance\\by step};
+    \path (11, 1) node [draw,circle,align=center,minimum width=2.5cm]
+	(result) {collect\\results};
+    \draw [->] (release) -- (checkout);
+    \draw [->] (checkout) -- (kernel);
+    \draw [->] (kernel) -- (test);
+    \draw [->] (test) -- (result);
+    \draw [->] (test) -- (step) -- (checkout);
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Hardware Perform Future}
-\begin{frame}{Hardware Perform Future}
+
+
+
+\subsection{Performance Hardware Future}
+\begin{frame}{Performance Hardware Future}
 \begin{tikzpicture}
-    \path ( 0, 0) node [draw] (tw1) {Target 1};
-    \path ( 4, 0) node [draw] (te1) {Target 1};
-    \draw [->] (tw1.east) -- (te1.west);
-    \path ( 0,-2) node [draw] (tw2) {Target 2};
-    \path ( 4,-2) node [draw] (te2) {Target 2};
-    \draw [->] (tw2.east) -- (te2.west);
-    \path (-4,-2) node [draw] (l) {Linux};
-    \draw [<->] (l.east) -- (tw2.west);
+    \path (  0,   0) node [draw] (local1) {Target 1};
+    \path (  4,   0) node [draw] (remote1) {Target 1};
+    \draw [->] (local1) -- (remote1);
+    \path (  0,  -2) node [draw] (local2) {Target 2};
+    \path (  4,  -2) node [draw] (remote2) {Target 2};
+    \draw [<->] (local2) -- (remote2);
+    \path ( -4,  -2) node [draw] (linux) {Linux};
+    \draw [<->] (linux) -- (local2);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{Performance Master}
+\begin{frame}{Performance Master}
+\begin{tikzpicture}
+    \path ( -2,   3) node (web) {web};
+    \path ( -2, 1.5) node [draw] (master) {master};
+    \path ( -2,-1.5) node [draw] (console) {console};
+    \path (  0,   0) node [draw,align=center] (local) {local\\target};
+    \path (  4,   0) node [draw,align=center] (remote) {remote\\target};
+    \draw (local) -- (remote);
+    \draw [->,red] (master) -- (web) node [midway,left] {publish};
+    \draw [->,red] (master) -- (console);
+    \draw [->,red] (master) |- (local) node [near start,left] {control};
+    \draw [->,red] (master) -| (local);
+    \draw [->,red] (master) -| (remote)
+	node [near start,above] {configure and compile};
+    \draw [->,red] (console) -| (local);
+    \draw [->,red] (console) -| (remote)
+	node [near start,below] {install release};
 \end{tikzpicture}
 \end{frame}
 
