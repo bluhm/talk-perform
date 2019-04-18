@@ -30,17 +30,20 @@
 \titlepage
 \end{frame}
 
-\begin{frame}{Agenda Perfomance Measurement}
+\begin{frame}{Perfomance Measurement}
 \setcounter{tocdepth}{1}
 \tableofcontents
 \end{frame}
 
-\section{What did exist?}
+\section{What did exist before?}
 
-\subsection{Existing HPF}
-\begin{frame}{Existing HPF}
-genua Firewall Testbed
+\begin{frame}{Agenda}
+\setcounter{tocdepth}{1}
+\tableofcontents[currentsection]
+\end{frame}
 
+\subsection{genua Firewall Testbed HPF}
+\begin{frame}{genua Firewall Testbed HPF}
 Numbers for
 \begin{itemize}
     \item Customers
@@ -146,7 +149,7 @@ Numbers for
 \begin{frame}{Existing Regression Tests}
 \begin{itemize}
     \item daily test runs
-    \item existing /usr/src/regress
+    \item using /usr/src/regress
     \item multi architecture
     \item history of pass and fail
     \item useful information
@@ -241,6 +244,11 @@ Numbers for
 \end{frame}
 
 \section{How does it work?}
+
+\begin{frame}{Agenda}
+\setcounter{tocdepth}{1}
+\tableofcontents[currentsection]
+\end{frame}
 
 \subsection{Performance Goals}
 \begin{frame}{Performance Goals}
@@ -362,5 +370,76 @@ Numbers for
 \end{frame}
 
 \section{What are the findings?}
+
+\begin{frame}{Agenda}
+\setcounter{tocdepth}{1}
+\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Reproduce and Reboot}
+\begin{frame}{Reproduce and Reboot}
+\begin{tikzpicture}
+    \path ( 6,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(kernel) {compile\\kernel};
+    \path ( 9,-2) node [draw,circle,align=center,minimum width=2.5cm]
+	(test) {run\\tests};
+    \path (11,-4) node [draw,circle,align=center,minimum width=2.5cm]
+	(keep) {run\\again};
+    \path (14,-4) node [draw,circle,align=center,minimum width=2.5cm]
+	(reboot) {reboot\\machine};
+    \path (17,-4) node [draw,circle,align=center,minimum width=2.5cm]
+	(reorder) {relink\\kernel};
+    \draw [->] (checkout.east) -- (kernel);
+    \draw [->] (kernel) -- (test);
+    \draw [->] (test) -- (result);
+    \draw [->] (test) -- (step);
+    \draw [->] (test) -| (keep);
+    \draw [->] (test) -| (reboot);
+    \draw [->] (test) -| (reorder);
+    \draw [->] (reorder) -- (reboot);
+    \draw [->] (reboot) -- (keep);
+    \draw [->] (keep) -| (test);
+\end{tikzpicture}
+\end{frame}
+
+\section{What is the Conclusion?}
+
+\begin{frame}{Agenda}
+\setcounter{tocdepth}{1}
+\tableofcontents[currentsection]
+\end{frame}
+
+\subsection{Insights}
+\begin{frame}{Insights}
+\begin{itemize}
+    \item measuring sucks
+    \item multi socket CPUs sucks
+    \item reproduction is hard
+    \item do not trust your numbers
+    \item keep is simple stupid
+\end{itemize}
+\end{frame}
+
+\subsection{Thanks}
+\begin{frame}{Thanks}
+\begin{itemize}
+    \item Jan Klemkow for Hardware Administration
+    \item Moritz Buhl for Visualization
+    \item genua for Hosting and Worktime
+\end{itemize}
+\end{frame}
+
+\subsection{Links}
+\begin{frame}{Links}
+\begin{itemize}
+    \small
+    \item \url{http://bluhm.genua.de/}
+    \item \url{http://bluhm.genua.de/regress/results/regress.html}
+    \item \url{http://bluhm.genua.de/perform/results/perform.html}
+    \item \url{https://github.com/bluhm/regress-all}
+    \item \url{https://github.com/younix/testmaster}
+    \item \url{https://github.com/bluhm/talk-perform}
+\end{itemize}
+\end{frame}
 
 \end{document}
