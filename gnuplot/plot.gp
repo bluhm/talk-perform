@@ -37,11 +37,7 @@ if (!exists("TITLE")) { TITLE = "" }
 if (!exists("UNIT")) { UNIT = "" }
 if (!exists("QUIRKS")) { QUIRKS = "" }
 
-if (exists("RUN_DATE")) {
-    stats DATA_FILE using 4:(strcol(3) eq RUN_DATE? $6:NaN) nooutput
-} else {
-    stats DATA_FILE using 4:6 nooutput
-}
+stats DATA_FILE using 4:6 nooutput
 
 # If there are not data points, create an empty image to prevent future gnuplot
 # invocations. To prevent warnings, set most style settings after this check.
