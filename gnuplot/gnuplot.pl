@@ -30,12 +30,13 @@ use Buildquirks;
 my $scriptname = "$0 @ARGV";
 
 my %opts;
-getopts('vnC:D:T:', \%opts) or do {
+getopts('vnC:D:N:T:', \%opts) or do {
     print STDERR <<"EOF";
-usage: $0 [-vn] [-D date] -T tcp|make|udp|fs new_file.tex
+usage: $0 [-vn] [-D date] [-N number] -T tcp|make|udp|fs new_file.tex
     -v		verbose
     -n		dry run
     -D date	run date
+    -N number	test number
     -T test	test name (tcp, make, upd, fs)
 EOF
     exit(2);
@@ -45,6 +46,7 @@ my $dry = $opts{n};
 my $run = str2time($opts{D})
     or die "Invalid -D date '$opts{D}'"
     if ($opts{D});
+my $tstnum = $opts{N};
 my $test = $opts{T}
     or die "Option -T tcp|make|udp|fs missing";
 
@@ -76,7 +78,9 @@ while (my $row = <$fh>) {
     $tests{"$tst $sub"} = 1;
 }
 
-my $testnames = join(" ", sort keys %tests);
+my @testarr = sort keys %tests;
+my $testnames = join(" ", @testarr);
+$testnames = $testarr[$tstnum] if $tstnum;
 my %q = quirks();
 my $quirks = join(" ", sort keys %q);
 

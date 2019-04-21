@@ -38,6 +38,11 @@ if (!exists("UNIT")) { UNIT = "" }
 if (!exists("QUIRKS")) { QUIRKS = "" }
 
 stats DATA_FILE using 4:6 nooutput
+st_max_y = STATS_max_y
+
+if (exists("RUN_DATE")) {
+    stats DATA_FILE using 4:(strcol(3) eq RUN_DATE? $6:NaN) nooutput
+}
 
 # If there are not data points, create an empty image to prevent future gnuplot
 # invocations. To prevent warnings, set most style settings after this check.
@@ -52,7 +57,7 @@ if (!exists("STATS_records")) {
 }
 
 set xrange[STATS_min_x - 1 : STATS_max_x + 1] # work around min == max
-set yrange[0 : STATS_max_y]
+set yrange[0 : st_max_y]
 set title TITLE
 set ylabel UNIT
 set format x "%Y-%m-%d"
@@ -91,11 +96,11 @@ if (exists("RUN_DATE")) {
 		strcol(2) eq word(TESTS,test+1)? $6:NaN \
 	    ):NaN \
 	):NaN \
-    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced
+    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 10
 } else {
     plot for [test = 1:words(TESTS):2] DATA_FILE using 4:( \
 	strcol(1) eq word(TESTS,test)? ( \
 	    strcol(2) eq word(TESTS,test+1)? $6:NaN \
 	):NaN \
-    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced
+    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 10
 }
