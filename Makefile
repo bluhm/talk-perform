@@ -16,8 +16,9 @@ TEXSRCS +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.tex
 OTHER +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.pdf
 CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.{tex,eps,pdf}
 
-$p.tex:
-	./gnuplot.pl -D $d -T $t -N $n $@
+$p.tex: test-$t.data
+	mkdir -p ${@:H}
+	perl gnuplot.pl -D $d -T $t -N $n $@
 
 $p.eps: $p.tex
 
