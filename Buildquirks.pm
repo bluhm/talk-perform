@@ -268,6 +268,38 @@ my %quirks = (
 	prebuildcommands => [ "make includes" ],
 	builddirs => [ "sbin/pfctl" ],
     },
+    '2019-03-01T16:46:11Z' => {
+	comment => "binutils for libLLVM",
+	updatedirs => [ "gnu/usr.bin/binutils", "gnu/usr.bin/binutils-2.17" ],
+	buildcommands => [
+	    "make -C gnu/usr.bin/binutils -f Makefile.bsd-wrapper obj",
+	    "make -C gnu/usr.bin/binutils-2.17 -f Makefile.bsd-wrapper obj",
+	    "make -C gnu/usr.bin/binutils -f Makefile.bsd-wrapper all",
+	    "make -C gnu/usr.bin/binutils-2.17 -f Makefile.bsd-wrapper all",
+	    "make -C gnu/usr.bin/binutils -f Makefile.bsd-wrapper install",
+	    "make -C gnu/usr.bin/binutils-2.17 -f Makefile.bsd-wrapper install",
+	],
+    },
+    '2019-03-05T14:01:08Z' => {
+	comment => "clang with libLLVM",
+	updatedirs => [ "share/mk", "gnu/llvm", "gnu/usr.bin/clang" ],
+	cleandirs => [
+	    "gnu/usr.bin/clang",
+	    "sys/arch/amd64/compile/GENERIC.MP",
+	],
+	builddirs => [ "share/mk", "gnu/usr.bin/clang" ],
+    },
+    '2019-04-02T03:02:47Z' => {
+	comment => "clang no stack protector if retguard",
+	updatedirs => [ "share/mk", "gnu/llvm", "gnu/usr.bin/clang" ],
+	cleandirs => [
+	    "gnu/usr.bin/clang",
+	    "sys/arch/amd64/compile/GENERIC.MP",
+	],
+	builddirs => [ "share/mk", "gnu/usr.bin/clang" ],
+    },
+# OpenBSD 6.5, 2019-04-13Z
+    '2019-04-13T20:56:59Z' => { comment => "OpenBSD/amd64 6.5 release" },
 );
 
 #### Patches ####
