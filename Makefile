@@ -1,6 +1,7 @@
 USE_PDFLATEX =	yes
 NAME =		perform-slides
 TEXSRCS	=	perform-slides.tex
+CLEAN_FILES =	${NAME:=.nav} ${NAME:=.snm}
 # make does not support : in file name, it is a variable modifier
 # latex does not support . in file name, it is a suffix
 GNUPLOTS =	2019-02-04T15:10:35Z tcp 0 \
