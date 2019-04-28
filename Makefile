@@ -11,13 +11,13 @@ GNUPLOTS =	2019-02-04T15:10:35Z tcp 0 \
 
 .for d t n in ${GNUPLOTS}
 
-p =		images/${d:S/:/-/g}-$t${n:N0:S/^/_/}
-TEXSRCS +=	images/${d:S/:/-/g}-$t${n:N0:S/^/_/}.tex
-OTHER +=	images/${d:S/:/-/g}-$t${n:N0:S/^/_/}.pdf
-CLEAN_FILES +=	images/${d:S/:/-/g}-$t${n:N0:S/^/_/}.{tex,eps,pdf}
+p =		gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}
+TEXSRCS +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.tex
+OTHER +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.pdf
+CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t${n:N0:S/^/_/}.{tex,eps,pdf}
 
 $p.tex:
-	cd gnuplot && ./gnuplot.pl -D $d -T $t -N $n ../$@
+	./gnuplot.pl -D $d -T $t -N $n $@
 
 $p.eps: $p.tex
 
