@@ -67,7 +67,7 @@ set xlabel "Checkout (date)"
 set tics out
 set border 3
 set output OUT_FILE
-set terminal epslatex color size 17, 10
+set terminal epslatex color size 10.5, 5
 #set terminal png transparent size 1360, 768
 unset key
 
@@ -96,11 +96,11 @@ if (exists("RUN_DATE")) {
 		strcol(2) eq word(TESTS,test+1)? $6:NaN \
 	    ):NaN \
 	):NaN \
-    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 10
+    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 4
 } else {
     plot for [test = 1:words(TESTS):2] DATA_FILE using 4:( \
 	strcol(1) eq word(TESTS,test)? ( \
 	    strcol(2) eq word(TESTS,test+1)? $6:NaN \
 	):NaN \
-    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 10
+    ) title word(TESTS,test)." ".word(TESTS,test+1) noenhanced ps 4
 }

@@ -375,7 +375,7 @@ Numbers for
 
 \subsection{Weekly from 6.2 to 6.3}
 \begin{frame}{Weekly from 6.2 to 6.3}
-    \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-02-04T15-10-35Z-tcp.tex}
     \end{adjustbox}
 \end{frame}
@@ -465,6 +465,13 @@ Numbers for
 \tableofcontents[currentsection]
 \end{frame}
 
+\subsection{Drilldown from Week to Days}
+\begin{frame}{Drilldown from Week to Days}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-02-01T00-35-28Z-tcp.tex}
+    \end{adjustbox}
+\end{frame}
+
 \subsection{Reproduce and Reboot}
 \begin{frame}{Reproduce and Reboot}
 \begin{tikzpicture}
@@ -478,7 +485,7 @@ Numbers for
 	(reboot) {reboot\\machine};
     \path (17,-4) node [draw,circle,align=center,minimum width=2.5cm]
 	(reorder) {relink\\kernel};
-    \draw [->] (checkout.east) -- (kernel);
+%    \draw [->] (checkout.east) -- (kernel);
     \draw [->] (kernel) -- (test);
     \draw [->] (test) -- (result);
     \draw [->] (test) -- (step);
@@ -493,21 +500,21 @@ Numbers for
 
 \subsection{5 Days, 10 Tests, Keep Machine Running}
 \begin{frame}{5 Days, 10 Tests, Keep Machine Running}
-    \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-03-19T14-50-23Z-tcp_7.tex}
     \end{adjustbox}
 \end{frame}
 
 \subsection{5 Days, 10 Tests, Reboot Machine}
 \begin{frame}{5 Days, 10 Tests, Reboot Machine}
-    \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-03-20T00-44-00Z-tcp_7.tex}
     \end{adjustbox}
 \end{frame}
 
 \subsection{5 Days, 10 Tests, Link and Reorder Kernel}
 \begin{frame}{5 Days, 10 Tests, Link and Reorder Kernel}
-    \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-03-20T17-37-52Z-tcp_7.tex}
     \end{adjustbox}
 \end{frame}
