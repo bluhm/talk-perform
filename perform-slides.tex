@@ -287,8 +287,8 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Performace Tests Overview}
-\begin{frame}{Regression Tests Overview}
+\subsection{Performance Tests Overview}
+\begin{frame}{Performance Tests Overview}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
 	{\includegraphics[width=10cm,trim=0 0 40.7cm 0,clip]
@@ -317,8 +317,8 @@ Numbers for
 \end{tikzpicture}
 \end{frame}
 
-\subsection{Performace Run at Date}
-\begin{frame}{Regression Run at Date}
+\subsection{Performance Run at Date}
+\begin{frame}{Performance Run at Date}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
 	{\includegraphics[width=10cm,trim=0 1cm 40cm 0,clip]
@@ -327,7 +327,7 @@ Numbers for
     \path (2.2,-1.35) node (e1) [ellipse,minimum width=1.3cm,
 	minimum height=0.7cm,draw,red,thick] {};
     \draw [draw,red,thick,->] (n1) -- (e1);
-    \path (-1.5,-2.5) node (n2) [red,align=center] {avarage\\numbers};
+    \path (-1.5,-2.5) node (n2) [red,align=center] {average\\numbers};
     \path (6.7,-3.1) node (e2) [ellipse,minimum width=7.5cm,
 	minimum height=0.5cm,draw,red,thick] {};
     \draw [draw,red,thick,->] (n2) -- (e2);
@@ -344,6 +344,32 @@ Numbers for
     \path (9,0) node (n6) [red,align=center] {build\\quirks};
     \path (8.25,-2.55) node (e6) [ellipse,minimum width=1cm,draw,red,thick] {};
     \draw [draw,red,thick,->] (n6) -- (e6);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{Performance Repeat at CVS Checkout}
+\begin{frame}{Performance Repeat at CVS Checkout}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+	{\includegraphics[width=10cm,trim=0 0 16cm 0,clip]
+	{images/screenshot_perform_cvs.png}};
+    \path (-1.5,-0.7) node (n1) [red] {reboot log};
+    \path (1.8,-1.25) node (e1) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n1) -- (e1);
+    \path (-1.5,-2.3) node (n2) [red,align=center] {single\\result};
+    \path (3.0,-2.6) node (e2) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n2) -- (e2);
+    \path (5,0.2) node (n4) [red,align=center] {repeat\\count};
+    \path (3.0,-1.4) node (e4) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n4) -- (e4);
+    \path (7,0) node (n5) [red] {outlier};
+    \path (4.95,-2.3) node (e5) [ellipse,minimum width=1cm,
+	minimum height=2cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n5) -- (e5);
+    \path (9,0) node (n6) [red,align=center] {standard\\deviation};
+    \path (9.5,-1.7) node (e6) [ellipse,minimum width=1cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n6) -- (e6);
+
 \end{tikzpicture}
 \end{frame}
 
@@ -497,8 +523,8 @@ Numbers for
 \begin{frame}{Insights}
 \begin{itemize}
     \item measuring sucks
-    \item multi socket CPUs sucks
-    \item reproduction is hard
+    \item multi socket CPUs suck
+    \item reproducing is hard
     \item do not trust your numbers
     \item keep is simple stupid
 \end{itemize}
