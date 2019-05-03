@@ -9,7 +9,9 @@ GNUPLOTS =	2019-02-04T15:10:35Z tcp - \
 		2019-03-20T00:44:00Z tcp 7 \
 		2019-03-20T17:37:52Z tcp 7 \
 		2019-02-01T00:35:28Z tcp - \
-		2019-04-30T19:11:10Z tcp 1
+		2019-04-30T19:11:10Z tcp 1 \
+		2019-01-15T01:56:26Z tcp - \
+		2019-04-24T16:19:44Z tcp -
 
 .for d t n in ${GNUPLOTS}
 
@@ -20,7 +22,7 @@ CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t${n:N-:S/^/_/}.{tex,eps,pdf}
 
 $p.tex: gnuplot.pl Buildquirks.pm plot.gp test-$t.data
 	mkdir -p ${@:H}
-	perl gnuplot.pl -D $d -T $t -N $n $@
+	perl gnuplot.pl -D $d -T $t ${n:N-:S/^/-N /} $@
 
 $p.eps: $p.tex
 
