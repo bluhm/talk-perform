@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>OpenBSD CVS Log</title>
+  <style>
+    table.commit { border: 1px solid black; }
+    th { text-align: left; vertical-align: top; white-space: nowrap; }
+    tr:hover {background-color: #e0e0e0}
+  </style>
+</head>
+
+<body>
+<h1>OpenBSD cvs log</h1>
+<table>
+  <tr>
+    <th>created</th>
+    <td>2019-04-20T18:30:24Z</td>
+  </tr>
+  <tr>
+    <th>begin</th>
+    <td>2019-04-16T00:00:00Z</td>
+  </tr>
+  <tr>
+    <th>end</th>
+    <td>2019-04-17T00:00:00Z</td>
+  </tr>
+  <tr>
+    <th>path</th>
+    <td>src/sys</td>
+  </tr>
+  <tr>
+    <th>commits</th>
+    <td>8</td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T04:04:19Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">dlg</td>
+  </tr>
+  <tr>
+    <th rowspan="4">files</th>
+    <td>src/sys/net/if.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if.c#rev1.576">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if.c.diff?r1=1.575&r2=1.576">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if.c?annotate=1.576">annotate</a></td>
+  </tr>
+  <tr>
+    <td>src/sys/net/if_var.h</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if_var.h#rev1.96">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if_var.h.diff?r1=1.95&r2=1.96">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/if_var.h?annotate=1.96">annotate</a></td>
+  </tr>
+  <tr>
+    <td>src/sys/net/ifq.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.c#rev1.31">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.c.diff?r1=1.30&r2=1.31">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.c?annotate=1.31">annotate</a></td>
+  </tr>
+  <tr>
+    <td>src/sys/net/ifq.h</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.h#rev1.26">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.h.diff?r1=1.25&r2=1.26">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/net/ifq.h?annotate=1.26">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	have another go at tx mitigation<br>
+	<br>
+	the idea is to call the hardware transmit routine less since in a<br>
+	lot of cases posting a producer ring update to the chip is (very)<br>
+	expensive. it's better to do it for several packets instead of each<br>
+	packet, hence calling this tx mitigation.<br>
+	<br>
+	this diff defers the call to the transmit routine to a network<br>
+	taskq, or until a backlog of packets has built up. dragonflybsd<br>
+	uses 16 as the size of it's backlog, so i'm copying them for now.<br>
+	<br>
+	i've tried this before, but previous versions caused deadlocks. i<br>
+	discovered that the deadlocks in the previous version was from<br>
+	ifq_barrier calling taskq_barrier against the nettq. interfaces<br>
+	generally hold NET_LOCK while calling ifq_barrier, but the tq might<br>
+	already be waiting for the lock we hold.<br>
+	<br>
+	this version just doesnt have ifq_barrier call taskq_barrier. it<br>
+	instead relies on the IFF_RUNNING flag and normal ifq serialiser<br>
+	barrier to guarantee the start routine wont be called when an<br>
+	interface is going down. the taskq_barrier is only used during<br>
+	interface destruction to make sure the task struct wont get used<br>
+	in the future, which is already done without the NET_LOCK being<br>
+	held.<br>
+	<br>
+	tx mitigation provides a nice performanace bump in some setups. up<br>
+	to 25% in some cases.<br>
+	<br>
+	tested by tb@ and hrvoje popovski (who's running this in production).<br>
+	ok visa@
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T09:40:21Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">dlg</td>
+  </tr>
+  <tr>
+    <th rowspan="1">files</th>
+    <td>src/sys/dev/pci/if_myx.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c#rev1.106">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c.diff?r1=1.105&r2=1.106">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c?annotate=1.106">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	make sff page reads work on little endian archs too. like amd64.<br>
+	<br>
+	some modules seem to need more time when waiting for bytes while here.<br>
+	<br>
+	hrvoje popovski hit the endian issue
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T11:42:56Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">dlg</td>
+  </tr>
+  <tr>
+    <th rowspan="1">files</th>
+    <td>src/sys/dev/pci/if_myx.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c#rev1.107">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c.diff?r1=1.106&r2=1.107">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/if_myx.c?annotate=1.107">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	i2c reads are more reliable a byte at a time.<br>
+	<br>
+	reading all 256 at a time was a nice idea, but meant page 0xa2 wasnt<br>
+	appearing like it should. this follows what freebsd does more<br>
+	closely too.
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T13:15:31Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">kettenis</td>
+  </tr>
+  <tr>
+    <th rowspan="2">files</th>
+    <td>src/sys/arch/arm64/dev/simplebus.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebus.c#rev1.11">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebus.c.diff?r1=1.10&r2=1.11">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebus.c?annotate=1.11">annotate</a></td>
+  </tr>
+  <tr>
+    <td>src/sys/arch/arm64/dev/simplebusvar.h</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebusvar.h#rev1.3">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebusvar.h.diff?r1=1.2&r2=1.3">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/dev/simplebusvar.h?annotate=1.3">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	Prevent attaching drivers to devices for which we attached a driver early.<br>
+	<br>
+	ok patrick@, dlg@, visa@
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T13:15:32Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">yasuoka</td>
+  </tr>
+  <tr>
+    <th rowspan="1">files</th>
+    <td>src/sys/kern/uipc_socket2.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/kern/uipc_socket2.c#rev1.101">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/kern/uipc_socket2.c.diff?r1=1.100&r2=1.101">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/kern/uipc_socket2.c?annotate=1.101">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	Use the actual cluster size instead of fixed MCLBYTES for the<br>
+	condition in sb_compress().  Currently the actual cluster size might<br>
+	be 9KB even if the mtu is 1500, in this case a lot of memory space had<br>
+	been wasted, since sbcompress() doesn't compress because of previous<br>
+	condition.<br>
+	<br>
+	ok dlg claudio
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T13:16:06Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">kettenis</td>
+  </tr>
+  <tr>
+    <th rowspan="2">files</th>
+    <td>src/sys/arch/arm/simplebus/simplebus.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebus.c#rev1.15">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebus.c.diff?r1=1.14&r2=1.15">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebus.c?annotate=1.15">annotate</a></td>
+  </tr>
+  <tr>
+    <td>src/sys/arch/arm/simplebus/simplebusvar.h</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebusvar.h#rev1.2">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebusvar.h.diff?r1=1.1&r2=1.2">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm/simplebus/simplebusvar.h?annotate=1.2">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	Prevent attaching drivers to devices for which we attached a driver early.<br>
+	<br>
+	ok patrick@, dlg@, visa@
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T14:32:44Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">patrick</td>
+  </tr>
+  <tr>
+    <th rowspan="1">files</th>
+    <td>src/sys/arch/arm64/arm64/pmap.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/arm64/pmap.c#rev1.61">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/arm64/pmap.c.diff?r1=1.60&r2=1.61">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/arch/arm64/arm64/pmap.c?annotate=1.61">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	When entering kernel pages uncached we need to make sure to flush the<br>
+	caches.  If the physical page was previously used by userland it is<br>
+	likely that this page is still in the cache and writing to the newly<br>
+	mapped page could result in unexpected behaviour.<br>
+	<br>
+	ok kettenis@
+    </td>
+  </tr>
+</table>
+<p>
+<table class="commit">
+  <tr>
+    <th>date</th>
+    <td colspan="4">2019-04-16T18:03:07Z</td>
+  </tr>
+  <tr>
+    <th>author</th>
+    <td colspan="4">patrick</td>
+  </tr>
+  <tr>
+    <th rowspan="1">files</th>
+    <td>src/sys/dev/pci/ppb.c</td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/ppb.c#rev1.67">log</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/ppb.c.diff?r1=1.66&r2=1.67">diff</a></td>
+    <td><a href="https://cvsweb.openbsd.org/src/sys/dev/pci/ppb.c?annotate=1.67">annotate</a></td>
+  </tr>
+  <tr>
+    <th>message</th>
+    <td colspan="4">
+	When we encounter ppb(4)s that are not configured we allocate a range<br>
+	of bus numbers from the parent's bus extent.  On detach, which can<br>
+	happen with hotplug-able devices, we should free those busses.<br>
+	<br>
+	ok kettenis@
+    </td>
+  </tr>
+</table>
+</body>
+</html>

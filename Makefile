@@ -11,7 +11,9 @@ GNUPLOTS =	2019-02-04T15:10:35Z tcp - \
 		2019-02-01T00:35:28Z tcp - \
 		2019-04-30T19:11:10Z tcp 1 \
 		2019-01-15T01:56:26Z tcp - \
-		2019-04-24T16:19:44Z tcp -
+		2019-04-24T16:19:44Z tcp - \
+		2019-05-01T21:26:58Z tcp -
+HTMLS =		2019-04-16T00-00-00Z--2019-04-17T00-00-00Z
 
 .for d t n in ${GNUPLOTS}
 
@@ -28,6 +30,16 @@ $p.eps: $p.tex
 
 $p.pdf: $p.eps
 	epstopdf ${@:.pdf=.eps}
+
+.endfor
+
+.for h in ${HTMLS}
+
+OTHER +=	html/$h.pdf
+CLEAN_FILES +=	html/$h.pdf
+
+html/$h.pdf: html/$h.html
+	wkhtmltopdf file://${.CURDIR}/html/$h.html html/$h.pdf
 
 .endfor
 
