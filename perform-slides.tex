@@ -528,8 +528,15 @@ Numbers for
 
 \subsection{2 CPU Sockets, Repeat, Keep running}
 \begin{frame}{2 CPU Sockets, Repeat, Keep running}
-    \includegraphics[width=\textwidth,trim=0 0 0 0,clip]
-	{images/screenshot_perform_keep_outlier.png}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+	{\includegraphics[width=\textwidth,trim=0 0 0 0,clip]
+	{images/screenshot_perform_keep_outlier.png}};
+    \path (7,-1.1) node (n1) [red] {second cycle};
+    \path (5.0,-3.2) node (e1) [ellipse,minimum width=1.5cm,
+	minimum height=2.5cm,draw,red,thick] {};
+    \draw [draw,red,thick,->] (n1) -- (e1);
+\end{tikzpicture}
 \end{frame}
 
 \subsection{from 6.3 to 6.4, 202 Days}
