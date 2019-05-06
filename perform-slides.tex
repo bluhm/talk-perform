@@ -380,6 +380,22 @@ Numbers for
     \end{adjustbox}
 \end{frame}
 
+\subsection{Quirks from 6.2 to 6.3}
+\begin{frame}{Quirks from 6.2 to 6.3}
+\begin{tabular}{cl}
+    A & OpenBSD/amd64 6.2 release\\
+    B & fix cvs vendor branch checkout\\
+    C & clang update LLVM to 5.0.0\\
+    D & pfctl pf packet rate matching\\
+    E & move kernel source file dwiic.c\\
+    F & pfctl pf divert type\\
+    G & sysctl struct vfsconf\\
+    H & clang update LLVM to 5.0.1\\
+    I & pfctl pf syncookies\\
+    J & OpenBSD/amd64 6.3 release\\
+\end{tabular}
+\end{frame}
+
 \subsection{Build Quirks}
 \begin{frame}{Build Quirks}
 \begin{tikzpicture}
@@ -405,22 +421,6 @@ Numbers for
     \draw [->] (userland) -- (toolchain);
     \draw [->] (toolchain) -- (checkout);
 \end{tikzpicture}
-\end{frame}
-
-\subsection{Quirks from 6.2 to 6.3}
-\begin{frame}{Quirks from 6.2 to 6.3}
-\begin{tabular}{cl}
-    A & OpenBSD/amd64 6.2 release\\
-    B & fix cvs vendor branch checkout\\
-    C & clang update LLVM to 5.0.0\\
-    D & pfctl pf packet rate matching\\
-    E & move kernel source file dwiic.c\\
-    F & pfctl pf divert type\\
-    G & sysctl struct vfsconf\\
-    H & clang update LLVM to 5.0.1\\
-    I & pfctl pf syncookies\\
-    J & OpenBSD/amd64 6.3 release\\
-\end{tabular}
 \end{frame}
 
 \subsection{Performance Hardware Future}
