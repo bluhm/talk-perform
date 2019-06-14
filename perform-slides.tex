@@ -566,6 +566,36 @@ Numbers for
 	{html/2019-04-16T00-00-00Z--2019-04-17T00-00-00Z.pdf}
 \end{frame}
 
+\subsection{UDP Throughput}
+\begin{frame}{UDP Throughput}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-06-11T12-11-57Z-udp.tex}
+    \end{adjustbox}
+\end{frame}
+
+\subsection{UDP and Timecounter}
+\begin{frame}{UDP and Timecounter}
+\begin{tabular}{l|c}
+    timecounter	& UDP Mbits \\
+    \hline
+    tsc		& 924 \\
+    acpihpet0	& 739 \\
+    acpitimer0	& 395 \\
+    i8254	& 306 \\
+\end{tabular}
+\end{frame}
+
+\subsection{iperf3 UDP}
+\begin{frame}{perf3 UDP}
+send packet in iperf3 loop
+\begin{itemize}
+    \item 1 write
+    \item 2 gettimeofday
+    \item 1 select
+    \item 2 gettimeofday
+\end{itemize}
+\end{frame}
+
 \section{What is the Conclusion?}
 
 \begin{frame}{Agenda}
