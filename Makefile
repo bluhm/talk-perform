@@ -5,9 +5,12 @@ CLEAN_FILES =	${NAME:=.nav} ${NAME:=.snm}
 # make does not support : in file name, it is a variable modifier
 # latex does not support . in file name, it is a suffix
 GNUPLOTS =	2019-02-04T15:10:35Z tcp - \
-		2019-03-19T14:50:23Z tcp 7 \
-		2019-03-20T00:44:00Z tcp 7 \
-		2019-03-20T17:37:52Z tcp 7 \
+		2019-08-10T05:41:55Z tcp 7 \
+		2019-08-10T00:26:05Z tcp 7 \
+		2019-08-09T20:22:42Z tcp 7 \
+		2019-08-09T16:57:09Z tcp 7 \
+		2019-08-09T13:35:53Z tcp 7 \
+		2019-08-09T08:58:58Z tcp 7 \
 		2019-02-01T00:35:28Z tcp - \
 		2019-04-30T19:11:10Z tcp 1 \
 		2019-01-15T01:56:26Z tcp - \
