@@ -56,8 +56,11 @@ if (!exists("STATS_records")) {
     exit
 }
 
+if (!exists("YRANGE_MIN")) { YRANGE_MIN = 0 }
+if (!exists("YRANGE_MAX")) { YRANGE_MAX = st_max_y }
+
 set xrange[STATS_min_x - 1 : STATS_max_x + 1] # work around min == max
-set yrange[0 : st_max_y]
+set yrange[YRANGE_MIN : YRANGE_MAX]
 set title TITLE
 set ylabel UNIT
 set format x "%Y-%m-%d"
