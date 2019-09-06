@@ -21,10 +21,10 @@ HTMLS =		2019-04-16T00-00-00Z--2019-04-17T00-00-00Z
 
 .for d t n y Y in ${GNUPLOTS}
 
-p =		gnuplot/${d:S/:/-/g}-$t${n:N-:S/^/_/}
-TEXSRCS +=	gnuplot/${d:S/:/-/g}-$t${n:N-:S/^/_/}.tex
-OTHER +=	gnuplot/${d:S/:/-/g}-$t${n:N-:S/^/_/}.pdf
-CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t${n:N-:S/^/_/}.{tex,eps,pdf}
+p =		gnuplot/${d:S/:/-/g}-$t
+TEXSRCS +=	gnuplot/${d:S/:/-/g}-$t.tex
+OTHER +=	gnuplot/${d:S/:/-/g}-$t.pdf
+CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t.{tex,eps,pdf}
 
 $p.tex: gnuplot.pl Buildquirks.pm plot.gp test-$t.data
 	mkdir -p ${@:H}
