@@ -433,44 +433,80 @@ Numbers for
 
 \subsection{6.5, 1 Day, 5 Tests, Keep Machine Running}
 \begin{frame}{6.5, 1 Day, 5 Tests, Keep Machine Running}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-08-10T05-41-55Z-tcp.tex}
-    \end{adjustbox}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	    \input{gnuplot/2019-08-10T05-41-55Z-tcp.tex}
+	\end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{6.5, 1 Day, 5 Tests, Reboot Machine}
 \begin{frame}{6.5, 1 Day, 5 Tests, Reboot Machine}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-08-10T00-26-05Z-tcp.tex}
-    \end{adjustbox}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	    \input{gnuplot/2019-08-10T00-26-05Z-tcp.tex}
+	\end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{6.5, 1 Day, 5 Tests, Link and Reorder Kernel}
 \begin{frame}{6.5, 1 Day, 5 Tests, Link and Reorder Kernel}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T20-22-42Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{6.5, 1 Day, 5 Tests, Sort Objects, Fixed Gap}
 \begin{frame}{6.5, 1 Day, 5 Tests, Sort Objects, Fixed Gap}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T16-57-09Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{6.5, 1 Day, 5 Tests, Sort Objects, Random Gap}
 \begin{frame}{6.5, 1 Day, 5 Tests, Sort Objects, Random Gap}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T13-35-53Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{6.5, 1 Day, 5 Tests, Align and Sort Objects, Fixed Gap}
 \begin{frame}{6.5, 1 Day, 5 Tests, Align Sorted Objects, Fixed Gap}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T08-58-58Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 4.7,-.5) node [red] {octeon};
+    \path (10.3,-.5) node [red] {unveil};
+\end{tikzpicture}
 \end{frame}
 
 \subsection{2 CPU Sockets, Repeat, Keep running}
