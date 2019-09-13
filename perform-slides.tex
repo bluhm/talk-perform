@@ -20,6 +20,7 @@
 \usepackage{adjustbox}
 \usepackage{graphicx}
 \graphicspath{gnuplot}
+\usepackage{multirow}
 
 \author{Alexander Bluhm}
 \title{Measuring Performance on OpenBSD}
@@ -438,7 +439,7 @@ Numbers for
 	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	    \input{gnuplot/2019-08-10T05-41-55Z-tcp.tex}
 	\end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
@@ -451,7 +452,7 @@ Numbers for
 	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	    \input{gnuplot/2019-08-10T00-26-05Z-tcp.tex}
 	\end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
@@ -464,7 +465,7 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T20-22-42Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
@@ -477,7 +478,7 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T16-57-09Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
@@ -490,7 +491,7 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T13-35-53Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
@@ -503,10 +504,28 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T08-58-58Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr(4)};
+    \path ( 2.9,-.5) node [red] {tpmr};
     \path ( 4.7,-.5) node [red] {octeon};
     \path (10.3,-.5) node [red] {unveil};
 \end{tikzpicture}
+\end{frame}
+
+\subsection{Kernel Symbol Table}
+\begin{frame}{Kernel Symbol Table}
+\begin{center}
+nm bsd, diff, diffstat \\
+\vspace{1cm}
+\begin{tabular}{c|cc|}
+    & sort & align \\
+    \hline
+    \multirow{2}{*}{unveil} & +169 & +13 \\
+    & -169 & -13 \\
+    \hline
+    \multirow{2}{*}{tpmr} & +25997 & +28731 \\
+    & -25983 & -28717 \\
+    \hline
+\end{tabular}
+\end{center}
 \end{frame}
 
 \subsection{2 CPU Sockets, Repeat, Keep running}
