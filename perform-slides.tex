@@ -566,9 +566,9 @@ nm bsd, diff, diffstat \\
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-05-02T21-09-24Z-make.tex}
     \end{adjustbox}};
-    \draw [red] (1.16,-2) node [red,anchor=south] {clang 5.0.0} -- +(0,-1);
-    \draw [red] (7.01,-2) node [red,anchor=south] {clang 5.0.1} -- +(0,-1);
-    \draw [red] (11.16,-2) node [red,anchor=south] {Meltdown} -- +(0,-1);
+    \draw [red] ( 1.16,-2) node [red,anchor=south] {clang 5.0.0} -- +(0,-1);
+    \draw [red] ( 7.01,-2) node [red,anchor=south] {clang 5.0.1} -- +(0,-1);
+    \draw [red] (11.16,-2) node [red,anchor=south] {Meltdown}    -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -579,25 +579,48 @@ nm bsd, diff, diffstat \\
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-01-15T01-56-26Z-tcp.tex}
     \end{adjustbox}};
-    \draw [red] (3.59,-3.5) node [red,anchor=north] {retpoline} -- +(0,1.0);
-    \draw [red] (5.60,-4.0) node [red,anchor=north] {witness}   -- +(0,1.0);
-    \draw [red] (5.90,-4.5) node [red,anchor=north] {retguard}  -- +(0,1.0);
-    \draw [red] (8.07,-4.0) node [red,anchor=north] {witness}   -- +(0,0.5);
+    \draw [red] (3.59,-4.0) node [red,anchor=north] {retpoline} -- +(0,1.5);
+    \draw [red] (5.60,-4.5) node [red,anchor=north] {witness}   -- +(0,1.5);
+    \draw [red] (5.90,-5.0) node [red,anchor=north] {retguard}  -- +(0,1.5);
+    \draw [red] (8.07,-4.5) node [red,anchor=north] {witness}   -- +(0,1.0);
 \end{tikzpicture}
 \end{frame}
 
 \subsection{from 6.4 to 6.5, 185 Days, Reorder}
 \begin{frame}{from 6.4 to 6.5, 185 Days, Reorder}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-04-24T16-19-44Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \draw [red] (9.01,-4.5) node [red,anchor=north] {save args} -- +(0,1);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{from 6.4 to 6.5, 185 Days, Make Kernel}
+\begin{frame}{from 6.4 to 6.5, 185 Days, Make Kernel}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-04-24T16-19-44Z-make.tex}
+    \end{adjustbox}};
+    \draw [red] (2.03,-2.5) node [red,anchor=south] {llvm ld}     -- +(0,-1.5);
+    \draw [red] (8.38,-3.0) node [red,anchor=north] {clang 7.0.1} -- +(0, 1);
+    \draw [red] (10.85,-2.5) node [red,anchor=south] {libllvm}     -- +(0,-1);
+    \draw [red] (12.70,-3.0) node [red,anchor=north] {stack protector} --
+	+(0, 1.5);
+\end{tikzpicture}
 \end{frame}
 
 \subsection{from 6.5, 123 Days, Align}
 \begin{frame}{from 6.5, 123 Days, Align}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-13T10-02-43Z-tcp.tex}
-    \end{adjustbox}
+    \end{adjustbox}};
+    \draw [red] (1.90,-4) node [red,anchor=north] {tx mitigation} -- +(0,1);
+\end{tikzpicture}
 \end{frame}
 
 \subsection{OpenBSD CVS Log}
