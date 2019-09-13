@@ -30,14 +30,17 @@ use Buildquirks;
 my $scriptname = "$0 @ARGV";
 
 my %opts;
-getopts('vnC:D:N:T:Y:y:', \%opts) or do {
+getopts('vnC:D:N:T:X:x:Y:y:', \%opts) or do {
     print STDERR <<"EOF";
-usage: $0 [-vn] [-D date] [-N number] -T tcp|make|udp|fs [-y min] [Y max] new_file.tex
+usage: $0 [-vn] [-D date] [-N number] -T tcp|make|udp|fs
+[-x min] [X max] [-y min] [Y max] new_file.tex
     -v		verbose
     -n		dry run
     -D date	run date
     -N number	test number
     -T test	test name (tcp, make, upd, fs)
+    -x min	x range minimum 
+    -X max	x range maximum
     -y min	y range minimum 
     -Y max	y range maximum
 EOF
@@ -51,10 +54,20 @@ my $run = str2time($opts{D})
 my $tstnum = $opts{N};
 my $test = $opts{T}
     or die "Option -T tcp|make|udp|fs missing";
-my ($ymin, $ymax);
+my ($xmin, $xmax, $ymin, $ymax);
+if (defined $opts{x}) {
+    $opts{x} =~ /^\d+$/
+	or die "x min '$opts{x}' not a number";
+    $xmin = $opts{x}
+}
+if (defined $opts{X}) {
+    $opts{X} =~ /^\d+$/
+	or die "X max '$opts{X}' not a number";
+    $xmax = $opts{X}
+}
 if (defined $opts{y}) {
     $opts{y} =~ /^\d+$/
-	or die "Y min '$opts{y}' not a number";
+	or die "y min '$opts{y}' not a number";
     $ymin = $opts{y}
 }
 if (defined $opts{Y}) {
@@ -106,6 +119,8 @@ my @plotvars = ("DATA_FILE='$testdata'",
 my @plotcmd = ("gnuplot", "-d");
 
 push @plotvars, "RUN_DATE='$run'" if $run;
+push @plotvars, "XRANGE_MIN='$xmin'" if defined $xmin;
+push @plotvars, "XRANGE_MAX='$xmax'" if defined $xmax;
 push @plotvars, "YRANGE_MIN='$ymin'" if defined $ymin;
 push @plotvars, "YRANGE_MAX='$ymax'" if defined $ymax;
 if ($dry) {

@@ -56,10 +56,13 @@ if (!exists("STATS_records")) {
     exit
 }
 
+# work around min == max
+if (!exists("XRANGE_MIN")) { XRANGE_MIN = STATS_min_x - 1 }
+if (!exists("XRANGE_MAX")) { XRANGE_MAX = STATS_max_x + 1 }
 if (!exists("YRANGE_MIN")) { YRANGE_MIN = 0 }
-if (!exists("YRANGE_MAX")) { YRANGE_MAX = st_max_y }
+if (!exists("YRANGE_MAX")) { YRANGE_MAX = st_max_y + 1 }
 
-set xrange[STATS_min_x - 1 : STATS_max_x + 1] # work around min == max
+set xrange[XRANGE_MIN : XRANGE_MAX]
 set yrange[YRANGE_MIN : YRANGE_MAX]
 set title TITLE
 set ylabel UNIT
