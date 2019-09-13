@@ -439,9 +439,9 @@ Numbers for
 	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	    \input{gnuplot/2019-08-10T05-41-55Z-tcp.tex}
 	\end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -452,9 +452,9 @@ Numbers for
 	{\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	    \input{gnuplot/2019-08-10T00-26-05Z-tcp.tex}
 	\end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -465,9 +465,9 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T20-22-42Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -478,9 +478,9 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T16-57-09Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -491,9 +491,9 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T13-35-53Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -504,9 +504,9 @@ Numbers for
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-08-09T08-58-58Z-tcp.tex}
     \end{adjustbox}};
-    \path ( 2.9,-.5) node [red] {tpmr};
-    \path ( 4.7,-.5) node [red] {octeon};
-    \path (10.3,-.5) node [red] {unveil};
+    \draw [red] ( 2.9,-0.8) node [red,anchor=south] {tpmr} -- +(0,-1);
+    \draw [red] ( 4.7,-0.8) node [red,anchor=south] {octeon} -- +(0,-1);
+    \draw [red] (10.3,-0.8) node [red,anchor=south] {unveil} -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -528,6 +528,13 @@ nm bsd, diff, diffstat \\
 \end{center}
 \end{frame}
 
+\subsection{6.4, 15 Days, 5 Tests, 2 CPU Sockets, Keep running}
+\begin{frame}{6.4, 15 Days, 5 Tests, 2 CPU Sockets, Keep running}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-04-30T19-11-10Z-tcp.tex}
+    \end{adjustbox}
+\end{frame}
+
 \subsection{2 CPU Sockets, Repeat, Keep running}
 \begin{frame}{2 CPU Sockets, Repeat, Keep running}
 \begin{tikzpicture}
@@ -541,24 +548,55 @@ nm bsd, diff, diffstat \\
 \end{tikzpicture}
 \end{frame}
 
-\subsection{from 6.3 to 6.4, 202 Days}
-\begin{frame}{from 6.3 to 6.4, 202 Days}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-01-15T01-56-26Z-tcp.tex}
-    \end{adjustbox}
+\subsection{from 6.2 to 6.3, 173 Days, Reorder}
+\begin{frame}{from 6.2 to 6.3, 173 Days, Reorder}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-05-02T21-09-24Z-tcp.tex}
+    \end{adjustbox}};
+    \draw [red] (7.9,-4) node [red,anchor=north] {tx mitigation} -- +(0,2);
+\end{tikzpicture}
 \end{frame}
 
-\subsection{from 6.4 to 6.5, 185 Days}
-\begin{frame}{from 6.4 to 6.5, 185 Days}
+\subsection{from 6.2 to 6.3, 173 Days, Make Kernel}
+\begin{frame}{from 6.2 to 6.3, 173 Days, Make Kernel}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-05-02T21-09-24Z-make.tex}
+    \end{adjustbox}};
+    \draw [red] (1.16,-2) node [red,anchor=south] {clang 5.0.0} -- +(0,-1);
+    \draw [red] (7.01,-2) node [red,anchor=south] {clang 5.0.1} -- +(0,-1);
+    \draw [red] (11.16,-2) node [red,anchor=south] {Meltdown} -- +(0,-1);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{from 6.3 to 6.4, 202 Days, Reorder}
+\begin{frame}{from 6.3 to 6.4, 202 Days, Reorder}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-01-15T01-56-26Z-tcp.tex}
+    \end{adjustbox}};
+    \draw [red] (3.59,-3.5) node [red,anchor=north] {retpoline} -- +(0,1.0);
+    \draw [red] (5.60,-4.0) node [red,anchor=north] {witness}   -- +(0,1.0);
+    \draw [red] (5.90,-4.5) node [red,anchor=north] {retguard}  -- +(0,1.0);
+    \draw [red] (8.07,-4.0) node [red,anchor=north] {witness}   -- +(0,0.5);
+\end{tikzpicture}
+\end{frame}
+
+\subsection{from 6.4 to 6.5, 185 Days, Reorder}
+\begin{frame}{from 6.4 to 6.5, 185 Days, Reorder}
     \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-04-24T16-19-44Z-tcp.tex}
     \end{adjustbox}
 \end{frame}
 
-\subsection{from 6.5, 19 Days}
-\begin{frame}{from 6.5, 19 Days}
+\subsection{from 6.5, 123 Days, Align}
+\begin{frame}{from 6.5, 123 Days, Align}
     \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-05-01T21-26-58Z-tcp.tex}
+	\input{gnuplot/2019-08-13T10-02-43Z-tcp.tex}
     \end{adjustbox}
 \end{frame}
 
