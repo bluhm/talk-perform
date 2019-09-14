@@ -513,9 +513,10 @@ Numbers for
 \subsection{Kernel Symbol Table}
 \begin{frame}{Kernel Symbol Table}
 \begin{center}
-nm bsd, diff, diffstat \\
+nm bsd, diff, diffstat
+
 \vspace{1cm}
-\begin{tabular}{c|cc|}
+\begin{tabular}{c|c|c|}
     & sort & align \\
     \hline
     \multirow{2}{*}{unveil} & +169 & +13 \\
@@ -566,9 +567,9 @@ nm bsd, diff, diffstat \\
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-05-02T21-09-24Z-make.tex}
     \end{adjustbox}};
-    \draw [red] ( 1.16,-2) node [red,anchor=south] {clang 5.0.0} -- +(0,-1);
-    \draw [red] ( 7.01,-2) node [red,anchor=south] {clang 5.0.1} -- +(0,-1);
-    \draw [red] (11.16,-2) node [red,anchor=south] {Meltdown}    -- +(0,-1);
+    \draw [red] ( 1.16,-3.8) node [red,anchor=north] {clang 5.0.0} -- +(0, 1);
+    \draw [red] ( 7.01,-3.8) node [red,anchor=north] {clang 5.0.1} -- +(0, 1);
+    \draw [red] (11.16,-3.4) node [red,anchor=south] {Meltdown}    -- +(0,-1);
 \end{tikzpicture}
 \end{frame}
 
@@ -593,7 +594,7 @@ nm bsd, diff, diffstat \\
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
 	\input{gnuplot/2019-04-24T16-19-44Z-tcp.tex}
     \end{adjustbox}};
-    \draw [red] (9.01,-4.5) node [red,anchor=north] {save args} -- +(0,1);
+    \draw [red] (9.02,-4.5) node [red,anchor=north] {save args} -- +(0,1);
 \end{tikzpicture}
 \end{frame}
 
@@ -631,13 +632,24 @@ nm bsd, diff, diffstat \\
 
 \subsection{UDP Throughput}
 \begin{frame}{UDP Throughput}
-    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-06-11T12-11-57Z-udp.tex}
-    \end{adjustbox}
+\begin{tikzpicture}
+    \path (0,0) node [anchor=north west]
+    {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-08-13T10-02-43Z-udp.tex}
+    \end{adjustbox}};
+    \draw [red] ( 1.90,-2.5) node [red,anchor=north] {tx mitigation} -- +(0,1);
+    \draw [red] ( 4.90,-2.5) node [red,anchor=north] {MDS} -- +(0, 1);
+    \draw [red] ( 6.90,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
+    \draw [red] (13.10,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
+\end{tikzpicture}
 \end{frame}
 
 \subsection{UDP and Timecounter}
 \begin{frame}{UDP and Timecounter}
+\begin{center}
+iperf3
+
+\vspace{1cm}
 \begin{tabular}{l|c}
     timecounter	& UDP Mbits \\
     \hline
@@ -646,6 +658,7 @@ nm bsd, diff, diffstat \\
     acpitimer0	& 395 \\
     i8254	& 306 \\
 \end{tabular}
+\end{center}
 \end{frame}
 
 \subsection{iperf3 UDP}
