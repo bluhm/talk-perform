@@ -647,14 +647,15 @@ nm bsd, diff, diffstat
 \end{tikzpicture}
 \end{frame}
 
-\subsection{from 6.5, 123 Days, Align}
-\begin{frame}{from 6.5, 123 Days, Align}
+\subsection{from 6.5, 154 Days, Align}
+\begin{frame}{from 6.5, 154 Days, Align}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-08-13T10-02-43Z-tcp.tex}
+	\input{gnuplot/2019-09-13T19-42-45Z-tcp.tex}
     \end{adjustbox}};
-    \draw [red] (1.90,-4) node [red,anchor=north] {tx mitigation} -- +(0,1);
+    \draw [red] (1.83,-4) node [red,anchor=north] {tx mitigation} -- +(0,1);
+    \draw [red] (11.48,-3.5) node [red,anchor=north] {checksum} -- +(0,1);
 \end{tikzpicture}
 \end{frame}
 
@@ -669,12 +670,13 @@ nm bsd, diff, diffstat
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-08-13T10-02-43Z-udp.tex}
+	\input{gnuplot/2019-09-13T19-42-45Z-udp.tex}
     \end{adjustbox}};
-    \draw [red] ( 1.90,-2.5) node [red,anchor=north] {tx mitigation} -- +(0,1);
-    \draw [red] ( 4.90,-2.5) node [red,anchor=north] {MDS} -- +(0, 1);
-    \draw [red] ( 6.90,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
-    \draw [red] (13.10,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
+    \draw [red] ( 1.83,-2.5) node [red,anchor=north] {tx mitigation} -- +(0,1);
+    \draw [red] ( 4.21,-2.5) node [red,anchor=north] {MDS} -- +(0, 1);
+    \draw [red] ( 5.79,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
+    \draw [red] (10.72,-2.5) node [red,anchor=south] {TSC} -- +(0,-1);
+    \draw [red] (11.48,-2.5) node [red,anchor=north] {checksum} -- +(0,1);
 \end{tikzpicture}
 \end{frame}
 
