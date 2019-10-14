@@ -300,9 +300,131 @@ my %quirks = (
     },
 # OpenBSD 6.5, 2019-04-13Z
     '2019-04-13T20:56:59Z' => { comment => "OpenBSD/amd64 6.5 release" },
+    '2019-05-08T23:53:40Z' => {
+	comment => "add ucrcom to files",
+	updatedirs => [ "sys" ],
+	patches => { 'sys-ucrcom' => patch_sys_files_ucrcom() },
+    },
+    '2019-06-17T22:31:48Z' => {
+	comment => "libcxx update libc++, libc++abi, libunwind to 8.0.0",
+	updatedirs => [ "lib/libcxx", "lib/libcxxabi",  "lib/libunwind" ],
+	cleandirs => [ "lib/libcxx", "lib/libcxxabi" ],
+	builddirs => [ "lib/libcxx", "lib/libcxxabi" ],
+    },
+    '2019-06-23T17:18:50Z' => {
+	comment => "sysctl kinfo_proc add p_pledge",
+	updatedirs => [ "sys", "lib/libkvm", "bin/ps" ],
+	prebuildcommands => [ "make includes" ],
+	builddirs => [
+	    "lib/libkvm",
+	    "bin/ps",
+	    "usr.bin/pkill",
+	    "usr.bin/systat",
+	    "usr.bin/top",
+	],
+    },
+    '2019-06-23T22:21:06Z' => {
+	comment => "clang update LLVM to 8.0.0",
+	updatedirs => [ "gnu/llvm", "gnu/usr.bin/clang" ],
+	cleandirs => [
+	    "gnu/usr.bin/clang",
+	    "sys/arch/amd64/compile/GENERIC.MP",
+	],
+	builddirs => [ "gnu/usr.bin/clang" ],
+    },
+    '2019-06-25T14:08:57Z' => {
+	comment => "sysctl kinfo_proc move p_pledge",
+	updatedirs => [ "sys" ],
+	prebuildcommands => [ "make includes" ],
+	builddirs => [
+	    "lib/libkvm",
+	    "bin/ps",
+	    "usr.bin/pkill",
+	    "usr.bin/systat",
+	    "usr.bin/top",
+	],
+    },
+    '2019-08-28T22:39:09Z' => {
+	comment => "uhci PCI ACPI attach fail",
+	updatedirs => [ "sys" ],
+	patches => { 'sys-uhci' => patch_sys_uhci_activate() },
+    },
+    '2019-09-01T16:40:03Z' => {
+	comment => "clang update LLVM to 8.0.1",
+	updatedirs => [ "gnu/llvm", "gnu/usr.bin/clang" ],
+	cleandirs => [
+	    "gnu/usr.bin/clang",
+	    "sys/arch/amd64/compile/GENERIC.MP",
+	],
+	builddirs => [ "gnu/usr.bin/clang" ],
+    },
+# OpenBSD 6.6, 2019-10-12Z
+    '2019-10-12T17:05:22Z' => { comment => "OpenBSD/amd64 6.6 release" },
 );
 
 #### Patches ####
+
+# modify linker script to align all object sections at page boundary
+sub patch_makefile_linkalign {
+	return <<'PATCH';
+--- /usr/src/sys/arch/amd64/compile/GENERIC.MP/obj/Makefile	Thu Jul 18 10:19:11 2019
++++ /usr/share/relink/kernel/GENERIC.MP/Makefile	Fri Jul 19 18:13:10 2019
+@@ -1124,7 +1124,10 @@ locore.o: assym.h
+ 	   echo "#GP-on-iretq fault handling would be broken"; exit 1; }
+ 
+ ld.script: ${_machdir}/conf/ld.script
+-	cp ${_machdir}/conf/ld.script $@
++	rm -f $@
++	/root/perform/makealign.sh ${_machdir}/conf/ld.script \
++	    ${SYSTEM_OBJ} vers.o swapgeneric.o >$@.tmp
++	mv $@.tmp $@
+ 
+ gapdummy.o:
+ 	echo '__asm(".section .rodata,\"a\"");' > gapdummy.c
+PATCH
+}
+
+# disable random sort of kernel object files, needed by reboot.pl
+sub patch_makefile_norandom {
+	return <<'PATCH';
+--- /usr/src/sys/arch/amd64/compile/GENERIC.MP/obj/Makefile	Sat Jun  1 12:39:49 2019
++++ /usr/share/relink/kernel/GENERIC.MP/Makefile	Tue Jun  4 23:06:56 2019
+@@ -50,7 +50,7 @@ CWARNFLAGS=	-Werror -Wall -Wimplicit-function-declarat
+ CMACHFLAGS=	-mcmodel=kernel -mno-red-zone -mno-sse2 -mno-sse -mno-3dnow \
+ 		-mno-mmx -msoft-float -fno-omit-frame-pointer
+ CMACHFLAGS+=	-ffreestanding ${NOPIE_FLAGS}
+-SORTR=		sort -R
++SORTR=		sort
+ .if ${IDENT:M-DNO_PROPOLICE}
+ CMACHFLAGS+=	-fno-stack-protector
+ .endif
+PATCH
+}
+
+# disable random kernel kernel gap, needed by reboot.pl
+sub patch_makegap_norandom {
+	return <<'PATCH';
+--- /usr/src/sys/conf/makegap.sh	Thu Jan 25 15:09:52 2018
++++ /usr/share/relink/kernel/GENERIC.MP/makegap.sh	Tue Jun  4 23:07:48 2019
+@@ -1,15 +1,7 @@
+ #!/bin/sh -
+ 
+ random_uniform() {
+-	local	_upper_bound
+-
+-	if [[ $1 -gt 0 ]]; then
+-		_upper_bound=$(($1 - 1))
+-	else
+-		_upper_bound=0
+-	fi
+-
+-	echo `jot -r 1 0 $_upper_bound 2>/dev/null`
++	echo 0
+ }
+ 
+ umask 007
+PATCH
+}
 
 # Checking out with existing vendor branch and commits on top was broken.
 # This is needed to cvs update llvm.
@@ -563,6 +685,72 @@ diff -u -p -r1.4 -r1.5
 PATCH
 }
 
+# Add ucrcom(4) a (very simple) driver for the serial console of (some)
+sub patch_sys_files_ucrcom {
+	return <<'PATCH';
+Index: sys/dev/usb/files.usb
+===================================================================
+RCS file: /data/mirror/openbsd/cvs/src/sys/dev/usb/files.usb,v
+retrieving revision 1.137
+retrieving revision 1.138
+diff -u -p -r1.137 -r1.138
+--- sys/dev/usb/files.usb	27 Mar 2019 22:08:51 -0000	1.137
++++ sys/dev/usb/files.usb	9 May 2019 00:20:57 -0000	1.138
+@@ -341,6 +341,11 @@ file	dev/usb/umcs.c			umcs
+ device	uscom: ucombus
+ attach	uscom at uhub
+ file	dev/usb/uscom.c			uscom
++
++# Chromebook serial
++device	ucrcom: ucombus
++attach	ucrcom at uhub
++file	dev/usb/ucrcom.c		ucrcom
+ 
+ # Exar XR21V1410
+ device	uxrcom: ucombus
+PATCH
+}
+
+# Supermicro X8DTH-i/6/iF/6F fails to attach uhci(4) via PCI and AHCI.
+sub patch_sys_uhci_activate {
+	return <<'PATCH';
+Index: sys/dev/pci/uhci_pci.c
+===================================================================
+RCS file: /data/mirror/openbsd/cvs/src/sys/dev/pci/uhci_pci.c,v
+retrieving revision 1.33
+retrieving revision 1.34
+diff -u -p -r1.33 -r1.34
+--- sys/dev/pci/uhci_pci.c	16 May 2014 18:17:03 -0000	1.33
++++ sys/dev/pci/uhci_pci.c	5 Sep 2019 17:59:12 -0000	1.34
+@@ -86,6 +86,9 @@ uhci_pci_activate(struct device *self, i
+ {
+ 	struct uhci_pci_softc *sc = (struct uhci_pci_softc *)self;
+ 
++	if (sc->sc.sc_size == 0)
++		return 0;
++
+ 	/* On resume, set legacy support attribute and enable intrs */
+ 	switch (act) {
+ 	case DVACT_RESUME:
+@@ -190,6 +193,7 @@ uhci_pci_attach(struct device *parent, s
+ 
+ unmap_ret:
+ 	bus_space_unmap(sc->sc.iot, sc->sc.ioh, sc->sc.sc_size);
++	sc->sc.sc_size = 0;
+ 	splx(s);
+ }
+ 
+@@ -218,6 +222,7 @@ uhci_pci_attach_deferred(struct device *
+ unmap_ret:
+ 	bus_space_unmap(sc->sc.iot, sc->sc.ioh, sc->sc.sc_size);
+ 	pci_intr_disestablish(sc->sc_pc, sc->sc_ih);
++	sc->sc.sc_size = 0;
+ 	splx(s);
+ }
+ 
+PATCH
+}
+
 #### Subs ####
 
 sub quirks {
@@ -592,7 +780,11 @@ sub quirk_comments {
 
 sub quirk_patches {
     my %q = quirks(@_);
-    return map { %{$q{$_}{patches} || {}} } sort keys %q;
+    return
+	'makefile-linkalign' => patch_makefile_linkalign(),
+	'makefile-norandom' => patch_makefile_norandom(),
+	'makegap-norandom'  => patch_makegap_norandom(),
+	map { %{$q{$_}{patches} || {}} } sort keys %q;
 }
 
 sub quirk_commands {
@@ -613,7 +805,7 @@ sub quirk_commands {
 	}
 	foreach my $patch (sort keys %{$v->{patches} || {}}) {
 	    my $file = "/root/perform/patches/$patch.diff";
-	    push @c, "cd /usr/src && patch -p0 <$file";
+	    push @c, "cd /usr/src && patch -NuF0 -p0 <$file";
 	}
 	foreach my $cmd (@{$v->{prebuildcommands} || []}) {
 	    push @c, "cd /usr/src && $cmd";
