@@ -626,12 +626,12 @@ nm bsd, diff, diffstat
 \end{tikzpicture}
 \end{frame}
 
-\subsection{from 6.5, 154 Days, Align}
-\begin{frame}{from 6.5, 154 Days, Align}
+\subsection{from 6.5 to 6.6, 184 Days, Align}
+\begin{frame}{from 6.5 to 6.6, 184 Days, Align}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-09-13T19-42-45Z-tcp.tex}
+	\input{gnuplot/2019-10-06T18-52-38Z-tcp.tex}
     \end{adjustbox}};
     \draw [red] (1.83,-4) node [red,anchor=north] {tx mitigation} -- +(0,1);
     \draw [red] (11.48,-3.5) node [red,anchor=north] {checksum} -- +(0,1);
@@ -644,12 +644,12 @@ nm bsd, diff, diffstat
 	{html/2019-04-16T00-00-00Z--2019-04-17T00-00-00Z.pdf}
 \end{frame}
 
-\subsection{UDP Throughput, from 6.5, 154 Days, Align}
-\begin{frame}{UDP Throughput, from 6.5, 154 Days, Align}
+\subsection{UDP Throughput, from 6.5 to 6.6, 184 Days, Align}
+\begin{frame}{UDP Throughput, from 6.5 to 6.6, 184 Days, Align}
 \begin{tikzpicture}
     \path (0,0) node [anchor=north west]
     {\begin{adjustbox}{totalheight=\textheight-3\baselineskip}
-	\input{gnuplot/2019-09-13T19-42-45Z-udp.tex}
+	\input{gnuplot/2019-10-06T18-52-38Z-udp.tex}
     \end{adjustbox}};
     \draw [red] ( 1.83,-2.5) node [red,anchor=north] {tx mitigation} -- +(0,1);
     \draw [red] ( 4.21,-2.5) node [red,anchor=north] {MDS} -- +(0, 1);
@@ -685,6 +685,13 @@ send packet in iperf3 loop
     \item 1 select
     \item 2 gettimeofday
 \end{itemize}
+\end{frame}
+
+\subsection{from 6.5 to 6.6, 184 Days, Make Kernel}
+\begin{frame}{from 6.5 to 6.6, 184 Days, Make Kernel}
+    \begin{adjustbox}{totalheight=\textheight-3\baselineskip}
+	\input{gnuplot/2019-10-06T18-52-38Z-make.tex}
+    \end{adjustbox}
 \end{frame}
 
 \section{What is the Conclusion?}
