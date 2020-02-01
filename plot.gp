@@ -17,6 +17,7 @@
 # plot test results, the following variables are required:
 # DATA_FILE	Path,	plot data file, space separated,
 #			format: "test subtest run checkout repeat value unit"
+# OUT_FILE	Path,   png output file
 # TESTS		String,	testnames to filter and plot, space separated,
 #			format: "test1 subtest1 test2 sub2 ... testN subN"
 #
