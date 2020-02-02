@@ -108,8 +108,7 @@ while (<$fh>) {
 
 my @tests = sort keys %tests;
 @tests = $tests[$tstnum] if $tstnum;
-my %q = quirks();
-my @quirks = sort keys %q;
+my @quirks = sort keys %{{quirks()}};
 
 my @plotvars = (
     "DATA_FILE='$testdata'",
