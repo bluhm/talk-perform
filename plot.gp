@@ -1,6 +1,7 @@
 #!/usr/local/bin/gnuplot
 
 # Copyright (c) 2018-2019 Moritz Buhl <mbuhl@genua.de>
+# Copyright (c) 2020 Alexander Bluhm <bluhm@genua.de>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +18,7 @@
 # plot test results, the following variables are required:
 # DATA_FILE	Path,	plot data file, space separated,
 #			format: "test subtest run checkout repeat value unit"
-# OUT_FILE	Path,   png output file
+# PREFIX	Path,	png output file
 # TESTS		String,	testnames to filter and plot, space separated,
 #			format: "test1 subtest1 test2 sub2 ... testN subN"
 #
@@ -27,8 +28,8 @@
 # TITLE		String,	plot title
 # UNIT		String, unit for the y-axis
 
-if (!exists("DATA_FILE") || !exists("OUT_FILE") || !exists("TESTS")) {
-    exit error "Please define DATA_FILE, OUT_FILE and TESTS."
+if (!exists("DATA_FILE") || !exists("PREFIX") || !exists("TESTS")) {
+    exit error "Please define DATA_FILE, PREFIX and TESTS."
     exit status 1
 }
 
@@ -38,22 +39,10 @@ if (!exists("TITLE")) { TITLE = "" }
 if (!exists("UNIT")) { UNIT = "" }
 if (!exists("QUIRKS")) { QUIRKS = "" }
 
-stats DATA_FILE using 4:6 nooutput
-
 if (exists("RUN_DATE")) {
     stats DATA_FILE using 4:(strcol(3) eq RUN_DATE? $6:NaN) nooutput
-}
-
-# If there are not data points, create an empty image to prevent future gnuplot
-# invocations. To prevent warnings, set most style settings after this check.
-if (!exists("STATS_records")) {
-    set terminal png size 240,80
-    set title TITLE."\nNO DATA" offset first 0,0
-    set yrange [-1:1]
-    unset tics
-    unset border
-    plot 0 lc rgb 'white'
-    exit
+} else {
+    stats DATA_FILE using 4:6 nooutput
 }
 
 # work around min == max
@@ -72,9 +61,8 @@ set xdata time
 set xlabel "Checkout (date)"
 set tics out
 set border 3
-set output OUT_FILE
+set output PREFIX.".tex"
 set terminal epslatex color size 10.5, 5
-#set terminal png transparent size 1360, 768
 unset key
 
 # draw quirks
@@ -83,7 +71,7 @@ lbl_index = 1
 do for [i = 1:words(QUIRKS)] {
     XPOS = (int(word(QUIRKS, i))-XRANGE_MIN)/(XRANGE_MAX-XRANGE_MIN)
     if (XPOS > 0 && XPOS < 1) {
-	DESCR = sprintf("%c", (64 + lbl_index))
+	DESCR = sprintf("%c", 64 + lbl_index)
 	set arrow from graph XPOS,0 to graph XPOS,1 nohead lw 1 lc rgb 'black'
 	set label DESCR at graph XPOS, graph 1 noenhanced \
 	    offset character -.5, character 0.7 front

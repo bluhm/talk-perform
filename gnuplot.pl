@@ -30,15 +30,16 @@ use Buildquirks;
 my $scriptname = "$0 @ARGV";
 
 my %opts;
-getopts('vnC:D:N:T:X:x:Y:y:', \%opts) or do {
+getopts('vnC:D:N:r:T:X:x:Y:y:', \%opts) or do {
     print STDERR <<"EOF";
-usage: $0 [-vn] [-D date] [-N number] -T test
-[-x min] [X max] [-y min] [Y max] new_file.tex
+usage: $0 [-vn] [-D date] [-N number] [-r release] -T test
+[-x min] [-X max] [-y min] [-Y max] new_file.tex
     -v		verbose
     -n		dry run
-    -D date	run date
+    -D date	when performace test was run
     -N number	test number
-    -T test	test name (tcp|tcp6|linux|linux6|make|udp|udp6|fs)
+    -r release	OpenBSD version number
+    -T test	test plot (tcp|tcp6|linux|linux6|make|udp|udp6|fs)
     -x min	x range minimum
     -X max	x range maximum
     -y min	y range minimum
@@ -48,14 +49,19 @@ EOF
 };
 my $verbose = $opts{v};
 my $dry = $opts{n};
+my $release;
+if ($opts{r} && $opts{r} ne "current") {
+    ($release = $opts{r}) =~ /^\d+\.\d+$/
+	or die "Release '$release' must be major.minor format";
+}
 my ($run, $date);
 if ($opts{D}) {
     $run = str2time($opts{D})
 	or die "Invalid -D date '$opts{D}'";
     $date = $opts{D};
 }
-my $tstnum = $opts{N};
-my $test = $opts{T}
+my $number = $opts{N};
+my $testplot = $opts{T}
     or die "Option -T test missing";
 my ($xmin, $xmax, $ymin, $ymax);
 if (defined $opts{x}) {
@@ -79,21 +85,17 @@ if (defined $opts{Y}) {
     $ymax = $opts{Y}
 }
 
-my $out = $ARGV[-1]
-    or die "new_file.tex missing";
-
 # better get an errno than random kill by SIGPIPE
 $SIG{PIPE} = 'IGNORE';
-
 
 my $plotfile = "plot.gp";
 -f $plotfile
     or die "No gnuplot file '$plotfile'";
-my $testdata = "test-$test.data";
+my $testdata = "test-$testplot.data";
 -f $testdata
     or die "No test data file '$testdata'";
 
-my $title = uc($test). " Performance";
+my $title = uc($testplot). " Performance";
 my %tests;
 open (my $fh, '<', $testdata)
     or die "Open '$testdata' for reading failed: $!";
@@ -107,12 +109,17 @@ while (<$fh>) {
 }
 
 my @tests = sort keys %tests;
-@tests = $tests[$tstnum] if $tstnum;
+@tests = $tests[$number] if $number;
 my @quirks = sort keys %{{quirks()}};
+
+my $prefix = "gnuplot/";
+$prefix .= "$release-" if $release;
+$prefix .= "$date-" if $date;
+$prefix .= "$testplot";
 
 my @plotvars = (
     "DATA_FILE='$testdata'",
-    "OUT_FILE='$out'",
+    "PREFIX='$prefix'",
     "QUIRKS='@quirks'",
     "TESTS='@tests'",
     "TITLE='$title'",
@@ -128,6 +135,7 @@ if ($dry) {
     push @plotcmd, (map { ("-e", "\"$_\"") } @plotvars);
     push @plotcmd, $plotfile;
     print "@plotcmd\n";
+    exit 0;
 } else {
     push @plotcmd, (map { ("-e", $_) } @plotvars);
     push @plotcmd, $plotfile;

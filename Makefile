@@ -34,11 +34,14 @@ CLEAN_FILES +=	gnuplot/${d:S/:/-/g}-$t.{tex,eps,pdf}
 
 $p.tex: gnuplot.pl Buildquirks.pm plot.gp test-$t.data
 	mkdir -p ${@:H}
+	rm -f $@
 	perl gnuplot.pl -D $d -T $t ${n:N-:S/^/-N /} \
 	    ${x:N-:S/^/-x /} ${X:N-:S/^/-X /} \
-	    ${y:N-:S/^/-y /} ${Y:N-:S/^/-Y /} $@
+	    ${y:N-:S/^/-y /} ${Y:N-:S/^/-Y /}
+	cp gnuplot/$d-$t.tex $@
 
 $p.eps: $p.tex
+	cp gnuplot/$d-$t.eps $@
 
 $p.pdf: $p.eps
 	epstopdf ${@:.pdf=.eps}
