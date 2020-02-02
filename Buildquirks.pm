@@ -23,13 +23,17 @@ use Date::Parse;
 use POSIX;
 
 use parent 'Exporter';
-our @EXPORT= qw(quirks quirk_comments quirk_patches quirk_commands);
+our @EXPORT= qw(quirks quirk_comments quirk_patches quirk_commands
+    quirk_releases);
 
 #### Quirks ####
 
 my %quirks = (
 # OpenBSD 6.2, 2017-10-04Z
-    '2017-10-04T03:27:49Z' => { comment => "OpenBSD/amd64 6.2 release" },
+    '2017-10-04T03:27:49Z' => {
+	comment => "OpenBSD/amd64 6.2 release",
+	release => 6.2,
+    },
     # cvs has a bug and cannot check out vendor branches between commits
     '2017-10-04T21:45:15Z' => {
 	comment => "fix cvs vendor branch checkout",
@@ -90,7 +94,10 @@ my %quirks = (
 	builddirs => [ "sbin/pfctl" ],
     },
 # OpenBSD 6.3, 2018-03-24Z
-    '2018-03-24T20:27:40Z' => { comment => "OpenBSD/amd64 6.3 release" },
+    '2018-03-24T20:27:40Z' => {
+	comment => "OpenBSD/amd64 6.3 release",
+	release => 6.3,
+    },
     '2018-04-05T03:32:39Z' => {
 	comment => "pfctl remove PF_TRANS_ALTQ",
 	updatedirs => [ "sys" ],
@@ -197,7 +204,10 @@ my %quirks = (
 	builddirs => [ "gnu/usr.bin/clang" ],
     },
 # OpenBSD 6.4, 2018-10-11Z
-    '2018-10-11T19:37:31Z' => { comment => "OpenBSD/amd64 6.4 release" },
+    '2018-10-11T19:37:31Z' => {
+	comment => "OpenBSD/amd64 6.4 release",
+	release => 6.4,
+    },
     '2018-10-16T18:20:58Z' => {
 	comment => "prepare kernel for lld linker",
 	updatedirs => [ "sys" ],
@@ -299,7 +309,10 @@ my %quirks = (
 	builddirs => [ "share/mk", "gnu/usr.bin/clang" ],
     },
 # OpenBSD 6.5, 2019-04-13Z
-    '2019-04-13T20:56:59Z' => { comment => "OpenBSD/amd64 6.5 release" },
+    '2019-04-13T20:56:59Z' => {
+	comment => "OpenBSD/amd64 6.5 release",
+	release => 6.5,
+    },
     '2019-05-08T23:53:40Z' => {
 	comment => "add ucrcom to files",
 	updatedirs => [ "sys" ],
@@ -344,6 +357,11 @@ my %quirks = (
 	    "usr.bin/top",
 	],
     },
+    '2019-08-02T02:17:35Z' => {
+	comment => "per-process itimers, missing part of commit",
+	updatedirs => [ "sys" ],
+	patches => { 'sys-time' => patch_sys_sys_time() },
+    },
     '2019-08-28T22:39:09Z' => {
 	comment => "uhci PCI ACPI attach fail",
 	updatedirs => [ "sys" ],
@@ -359,7 +377,32 @@ my %quirks = (
 	builddirs => [ "gnu/usr.bin/clang" ],
     },
 # OpenBSD 6.6, 2019-10-12Z
-    '2019-10-12T17:05:22Z' => { comment => "OpenBSD/amd64 6.6 release" },
+    '2019-10-12T17:05:22Z' => {
+	comment => "OpenBSD/amd64 6.6 release",
+	release => 6.6,
+    },
+    '2019-11-03T20:16:01Z' => {
+	comment => "sys_shmctl fix copyin",
+	updatedirs => [ "sys" ],
+	patches => { 'sys-shm' => patch_sys_shm_copyin() },
+    },
+    '2019-11-27T01:13:04Z' => {
+	comment => "kernel provides msyscall as a noop",
+	updatedirs => [ "sys" ],
+	prebuildcommands => [
+	    "make includes",
+	    "make -C sys/arch/amd64/compile/GENERIC.MP config",
+	    "make -C sys/arch/amd64/compile/GENERIC.MP clean",
+	],
+	builddirs => [ "sys/arch/amd64/compile/GENERIC.MP" ],
+	commands => [ "reboot" ],
+    },
+    # Reboot to kernel with dummy syscall msyscall(2) before ld.so quirk.
+    '2019-11-29T06:34:46Z' => {
+	comment => "ld.so uses msyscall to permit syscalls",
+	updatedirs => [ "libexec/ld.so" ],
+	builddirs => [ "libexec/ld.so" ],
+    },
 );
 
 #### Patches ####
@@ -711,6 +754,28 @@ diff -u -p -r1.137 -r1.138
 PATCH
 }
 
+sub patch_sys_sys_time {
+	return <<'PATCH';
+Index: sys/sys/time.h
+===================================================================
+RCS file: /data/mirror/openbsd/cvs/src/sys/sys/time.h,v
+retrieving revision 1.44
+retrieving revision 1.45
+diff -u -p -r1.44 -r1.45
+--- sys/sys/time.h	3 Jul 2019 22:39:33 -0000	1.44
++++ sys/sys/time.h	2 Aug 2019 03:33:15 -0000	1.45
+@@ -298,7 +298,7 @@ struct proc;
+ int	clock_gettime(struct proc *, clockid_t, struct timespec *);
+ 
+ int	itimerfix(struct timeval *);
+-int	itimerdecr(struct itimerval *itp, int usec);
++int	itimerdecr(struct itimerspec *itp, long nsec);
+ void	itimerround(struct timeval *);
+ int	settime(const struct timespec *);
+ int	ratecheck(struct timeval *, const struct timeval *);
+PATCH
+}
+
 # Supermicro X8DTH-i/6/iF/6F fails to attach uhci(4) via PCI and AHCI.
 sub patch_sys_uhci_activate {
 	return <<'PATCH';
@@ -751,6 +816,29 @@ diff -u -p -r1.33 -r1.34
 PATCH
 }
 
+# Fix previous commit: missed a ds_copyin() moved in rev 1.72
+sub patch_sys_shm_copyin {
+	return <<'PATCH';
+Index: sys/kern/sysv_shm.c
+===================================================================
+RCS file: /data/mirror/openbsd/cvs/src/sys/kern/sysv_shm.c,v
+retrieving revision 1.73
+retrieving revision 1.74
+diff -u -p -r1.73 -r1.74
+--- sys/kern/sysv_shm.c	3 Nov 2019 20:16:01 -0000	1.73
++++ sys/kern/sysv_shm.c	4 Nov 2019 00:48:22 -0000	1.74
+@@ -296,7 +296,7 @@ sys_shmctl(struct proc *p, void *v, regi
+ 	int		error;
+ 
+ 	if (cmd == IPC_SET) {
+-		error = ds_copyin(buf, &inbuf, sizeof(inbuf));
++		error = copyin(buf, &inbuf, sizeof(inbuf));
+ 		if (error)
+ 			return (error);
+ 	}
+PATCH
+}
+
 #### Subs ####
 
 sub quirks {
@@ -764,10 +852,11 @@ sub quirks {
 
     my %q;
     while (my($k, $v) = each %quirks) {
-	my $commit = str2time($k)
+	my $commit = $v->{commit} ||= str2time($k)
 	    or die "Invalid commit date '$k'";
 	next if $before && $commit <= $before;
 	next if $after && $commit > $after;
+	$v->{date} = strftime("%FT%TZ", gmtime($commit));
 	$q{$commit} = $v;
     }
     return %q;
@@ -775,7 +864,7 @@ sub quirks {
 
 sub quirk_comments {
     my %q = quirks(@_);
-    return map { $q{$_}{comment} } sort keys %q;
+    return map { "$q{$_}{date} $q{$_}{comment}" } sort keys %q;
 }
 
 sub quirk_patches {
@@ -822,9 +911,32 @@ sub quirk_commands {
 	foreach my $cmd (@{$v->{buildcommands} || []}) {
 	    push @c, "cd /usr/src && $cmd";
 	}
+	foreach my $cmd (@{$v->{commands} || []}) {
+	    push @c, $cmd;
+	}
     }
 
     return @c;
+}
+
+sub quirk_releases {
+    my %q = quirks();
+    my %r;
+    my $prev;
+    foreach my $commit (sort keys %q) {
+	my $release = $q{$commit}{release}
+	    or next;
+	my $date = strftime("%FT%TZ", gmtime($commit));
+	(my $before = $date) =~ s/T.*Z/T00:00:00Z/;
+	my $after = strftime("%FT%TZ", gmtime($commit + 24*60*60 - 1));
+	$after =~ s/T.*Z/T00:00:00Z/;
+	$prev->{end} = $after if $prev;
+	$prev = $r{$release} = {
+	    date => $date,
+	    begin => $before,
+	}
+    }
+    return %r;
 }
 
 1;
