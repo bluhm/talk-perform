@@ -39,7 +39,6 @@ if (!exists("UNIT")) { UNIT = "" }
 if (!exists("QUIRKS")) { QUIRKS = "" }
 
 stats DATA_FILE using 4:6 nooutput
-st_max_y = STATS_max_y
 
 if (exists("RUN_DATE")) {
     stats DATA_FILE using 4:(strcol(3) eq RUN_DATE? $6:NaN) nooutput
@@ -61,7 +60,7 @@ if (!exists("STATS_records")) {
 if (!exists("XRANGE_MIN")) { XRANGE_MIN = STATS_min_x - 1 }
 if (!exists("XRANGE_MAX")) { XRANGE_MAX = STATS_max_x + 1 }
 if (!exists("YRANGE_MIN")) { YRANGE_MIN = 0 }
-if (!exists("YRANGE_MAX")) { YRANGE_MAX = st_max_y + 1 }
+if (!exists("YRANGE_MAX")) { YRANGE_MAX = STATS_max_y + 1 }
 
 set xrange[XRANGE_MIN : XRANGE_MAX]
 set yrange[YRANGE_MIN : YRANGE_MAX]
